@@ -1,0 +1,7 @@
+{
+  "name":"@emsenn/eo-resolving-an-identifier","version":"0.1.0","private":true,"type":"module",
+  "description":"Headverb service ME that resolves identifiers from a customer node's own standpoint.",
+  "exports":"./src/resolve-an-identifier.js","bin":{"resolve-an-identifier":"./src/resolve-an-identifier.js"},
+  "scripts":{"check":"node --check src/resolve-an-identifier.js"},
+  "x-agentic-metro-enterprise":{"node-id":"resolving-an-identifier","parent-contract":"knowledge-services-section/identifier-services-section","membrane":{"law":"lib/","lasting-instances":"content/","append-only-instances":"data/"},"admission":"Board-to-EO contracted route only","refusal":"direct CLI invocation without constitutional descent"}
+}
