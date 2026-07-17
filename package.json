@@ -3,5 +3,5 @@
   "description":"Headverb service ME that resolves identifiers from a customer node's own standpoint.",
   "exports":"./src/resolve-an-identifier.js","bin":{"resolve-an-identifier":"./src/resolve-an-identifier.js"},
   "scripts":{"check":"node --check src/resolve-an-identifier.js"},
-  "x-agentic-metro-enterprise":{"node-id":"resolving-an-identifier","parent-contract":"knowledge-services-section/identifier-services-section","membrane":{"law":"lib/","lasting-instances":"content/","append-only-instances":"data/"},"admission":"Board-to-EO contracted route only","refusal":"direct CLI invocation without constitutional descent"}
+  "x-agentic-metro-enterprise":{"node-id":"resolving-an-identifier","owners":["board-of-directors","executive-office","knowledge-services-section","identifier-services-section"],"membrane":{"law":"lib/","lasting-instances":"content/","append-only-instances":"data/"},"admission":"direct bilateral contracting at this membrane","refusal":"cross-settlement scans and ambiguous identifiers"}
 }
