@@ -280,7 +280,12 @@ export function recordDate(record) {
 
 function dayFileFor(base, kind, dateStr) {
   const [y, m, d] = dateStr.split("-");
-  const nodeRoot = dirname(dirname(base));
+  // Walked up to the nearest package.json rather than a fixed two-level
+  // dirname: DATA_KIND_BUCKETS nests a bucketed kind's base three levels
+  // under the node root (data/<bucket>/<kind>) instead of two
+  // (data/<kind>), and a fixed-depth guess silently missed the manifest and
+  // fell back to the generic "node" name for every bucketed kind.
+  const nodeRoot = findUnit(base) ?? dirname(dirname(base));
   let node = "node";
   try {
     const manifest = JSON.parse(readFileSync(join(nodeRoot, "package.json"), "utf8"));
