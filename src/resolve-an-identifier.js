@@ -232,10 +232,10 @@ export function seatForms(pool, slug) {
 // A data pool is not a directory of one-file-per-slug instances the way a
 // content pool is — it is a log: every record a day produced for a kind
 // lands as one line in that day's <YYYY>-<MM>-<DD>-<kind>.jsonl, under
-// data/<kind>/<YYYY>/<MM>/<DD>/. Reading a data pool means reading every day
-// file it has; a log has no "nearest", only "all of it", so these are kept
-// as their own named functions rather than forced through poolsFor/seatForms,
-// which assume one file per slug.
+// data/<bucket>/<kind>/<YYYY>/<MM>/<DD>/. Reading a data pool means reading
+// every day file it has; a log has no "nearest", only "all of it", so these
+// are kept as their own named functions rather than forced through
+// poolsFor/seatForms, which assume one file per slug.
 //
 // Every function below takes `base` — the kind's own data directory,
 // e.g. dataDir(unit, kind) for the ordinary case, or a caller's own
@@ -244,8 +244,25 @@ export function seatForms(pool, slug) {
 // a second time. `kind` is carried alongside base only because it is also
 // the day-file's own name suffix.
 
+// The settled convention retires bare data/<kind> in favor of exactly four
+// top-level buckets — data/journals, data/ledgers, data/state, data/records —
+// with each kind seating under one of them. A kind not yet named here (e.g.
+// movements, books) has no settled bucket and is left bare until an anomaly
+// or decision names where it seats — never silently guessed.
+const DATA_KIND_BUCKETS = {
+  tasks: "state",
+  dispatches: "state",
+  "work-items": "state",
+  anomalies: "records",
+  ideas: "records",
+  "decision-records": "records",
+  "requirement-events": "journals",
+  requirements: "records",
+};
+
 export function dataDir(unit, kind) {
-  return join(unit, "data", kind);
+  const bucket = DATA_KIND_BUCKETS[kind];
+  return bucket ? join(unit, "data", bucket, kind) : join(unit, "data", kind);
 }
 
 // Best-effort date a record itself states, never filesystem mtime — the same
