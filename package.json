@@ -1,7 +1,51 @@
 {
-  "name":"@emsenn/eo-resolving-an-identifier","version":"0.1.0","private":true,"type":"module",
-  "description":"Headverb service ME that resolves identifiers from a customer node's own standpoint.",
-  "exports":"./src/resolve-an-identifier.js","bin":{"resolve-an-identifier":"./src/resolve-an-identifier.js"},
-  "scripts":{"check":"node --check src/resolve-an-identifier.js"},
-  "x-agentic-metro-enterprise":{"node-id":"resolving-an-identifier","owners":["board-of-directors","executive-office","knowledge-services-section","identifier-services-section"],"membrane":{"law":"lib/","lasting-instances":"content/","append-only-instances":"data/"},"admission":"direct bilateral contracting at this membrane","refusal":"cross-settlement scans and ambiguous identifiers"}
+  "name": "@harmonious-union/resolving-an-identifier",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Headverb service ME that resolves identifiers from a customer node's own standpoint.",
+  "exports": {
+    ".": "./src/resolve-an-identifier.js",
+    "./src/resolve-an-identifier.js": "./src/resolve-an-identifier.js"
+  },
+  "bin": {
+    "resolve-an-identifier": "./src/resolve-an-identifier.js"
+  },
+  "scripts": {
+    "check": "node --check src/resolve-an-identifier.js"
+  },
+  "x-agentic-metro-enterprise": {
+    "node-id": "resolving-an-identifier",
+    "owners": [
+      "board-of-directors",
+      "executive-office",
+      "knowledge-services-section",
+      "identifier-services-section"
+    ],
+    "membrane": {
+      "law": "lib/",
+      "lasting-instances": "content/",
+      "append-only-instances": "data/"
+    },
+    "admission": "direct bilateral contracting at this membrane",
+    "refusal": "cross-settlement scans and ambiguous identifiers"
+  },
+  "x-semiotic-voxel": {
+    "profile": "org.harmonious-union.semiotic-voxel.v1",
+    "owner": "harmonious-union",
+    "kind": "capability-cell",
+    "actor": "urn:ame:resolving-an-identifier",
+    "operations": [
+      "resolving-an-identifier"
+    ],
+    "capabilities": [
+      {
+        "capability": "resolving-an-identifier",
+        "faces": [
+          "resolving-an-identifier"
+        ]
+      }
+    ],
+    "package": "@harmonious-union/resolving-an-identifier"
+  }
 }
