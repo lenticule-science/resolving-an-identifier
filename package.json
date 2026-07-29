@@ -12,7 +12,8 @@
     "resolve-an-identifier": "./src/resolve-an-identifier.js"
   },
   "scripts": {
-    "check": "node --check src/resolve-an-identifier.js"
+    "check": "node --check src/resolve-an-identifier.js",
+    "test": "node --test test/*.test.mjs"
   },
   "x-agentic-metro-enterprise": {
     "node-id": "resolving-an-identifier",

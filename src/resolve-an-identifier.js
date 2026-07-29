@@ -229,12 +229,11 @@ export function seatForms(pool, slug) {
 }
 
 // ── data: write-once/append-only kinds, day-bucketed under data/<kind> ─────
-// A data pool is not a directory of one-file-per-slug instances the way a
-// content pool is — it is a log: every record a day produced for a kind
-// lands as one line in that day's <YYYY>-<MM>-<DD>-<kind>.jsonl, under
-// data/<bucket>/<kind>/<YYYY>/<MM>/<DD>/. Reading a data pool means reading
-// every day file it has; a log has no "nearest", only "all of it", so these
-// are kept as their own named functions rather than forced through
+// The settled data-pool shape is a log: every record a day produced for a kind
+// lands as one line in that day's <YYYY>-<MM>-<DD>-<kind>.jsonl. Some live
+// pools still contain pre-settlement one-file JSON records; reads replay both
+// shapes while all new writes use the log. A log has no "nearest", only "all
+// of it", so these are kept as their own named functions rather than forced through
 // poolsFor/seatForms, which assume one file per slug.
 //
 // Every function below takes `base` — the kind's own data directory,
@@ -314,11 +313,39 @@ export function listDataDayFiles(base, kind) {
   return files.sort();
 }
 
-// Every record a data pool currently holds, each carrying the file and
-// 1-indexed line it came from — a caller naming where a record lives (an
+// One-file JSON records predate the day-log convention but are still live in
+// several Executive Office pools.  They remain readable until they are
+// explicitly migrated; silently omitting them makes an audit of an otherwise
+// healthy pool report an empty or partial history.
+export function listLegacyDataRecordFiles(base) {
+  const files = [];
+  if (!existsSync(base)) return files;
+  (function walk(dir) {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const child = join(dir, entry.name);
+      if (entry.isDirectory()) walk(child);
+      else if (entry.isFile() && entry.name.endsWith(".json")) files.push(child);
+    }
+  })(base);
+  return files.sort();
+}
+
+// Every record a data pool currently holds across legacy JSON and day logs,
+// each carrying the file and 1-indexed line it came from — a caller naming where a record lives (an
 // anomaly, a --verify failure) has that without re-deriving it.
 export function readDataPool(base, kind) {
   const records = [];
+  // Legacy records are replayed first.  A later append-log snapshot of the
+  // same id therefore remains the authoritative last observation.
+  for (const file of listLegacyDataRecordFiles(base)) {
+    let record;
+    try {
+      record = JSON.parse(readFileSync(file, "utf8"));
+    } catch (e) {
+      throw new Error(`${file}:1 is not valid JSON: ${e.message}`);
+    }
+    records.push({ file, line: 1, record });
+  }
   for (const file of listDataDayFiles(base, kind)) {
     const lines = readFileSync(file, "utf8").split("\n");
     lines.forEach((line, i) => {
